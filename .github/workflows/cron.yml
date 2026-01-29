@@ -1,0 +1,23 @@
+import requests
+import sys
+
+# 在這裡填入你所有的 Streamlit App 網址
+URLS = [
+    "https://tw-stock-scanner-fomkzcps6qclappdjkuifx7.streamlit.app",
+    "https://webanysis-dsusu5xqiuq3tpbctphxwx.streamlit.app/"
+]
+
+def ping_apps():
+    for url in URLS:
+        try:
+            # 使用 get 請求，設定 timeout 避免卡死
+            response = requests.get(url, timeout=30)
+            if response.status_code == 200:
+                print(f"✅ 成功喚醒: {url}")
+            else:
+                print(f"⚠️ 網頁回應異常碼 {response.status_code}: {url}")
+        except Exception as e:
+            print(f"❌ 無法連線至 {url}: {e}")
+
+if __name__ == "__main__":
+    ping_apps()
