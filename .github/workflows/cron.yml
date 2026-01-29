@@ -2,9 +2,8 @@ name: Wake Up Streamlit Apps
 
 on:
   schedule:
-    # 每天台灣時間早上 8 點執行一次 (UTC 0:00)
     - cron: '0 0 * * *'
-  workflow_dispatch: # 允許手動點擊按鈕測試
+  workflow_dispatch: 
 
 jobs:
   ping:
@@ -16,10 +15,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: pip install requests
+
+      - name: List files (除錯用)
+        run: ls -R  # 這行會印出檔案列表，幫你確認檔案在哪
 
       - name: Run ping script
         run: python keep_alive.py
