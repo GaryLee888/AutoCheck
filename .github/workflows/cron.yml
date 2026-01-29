@@ -1,23 +1,25 @@
-import requests
-import sys
+name: Wake Up Streamlit Apps
 
-# 在這裡填入你所有的 Streamlit App 網址
-URLS = [
-    "https://tw-stock-scanner-fomkzcps6qclappdjkuifx7.streamlit.app",
-    "https://webanysis-dsusu5xqiuq3tpbctphxwx.streamlit.app/"
-]
+on:
+  schedule:
+    # 每天台灣時間早上 8 點執行一次 (UTC 0:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允許手動點擊按鈕測試
 
-def ping_apps():
-    for url in URLS:
-        try:
-            # 使用 get 請求，設定 timeout 避免卡死
-            response = requests.get(url, timeout=30)
-            if response.status_code == 200:
-                print(f"✅ 成功喚醒: {url}")
-            else:
-                print(f"⚠️ 網頁回應異常碼 {response.status_code}: {url}")
-        except Exception as e:
-            print(f"❌ 無法連線至 {url}: {e}")
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-if __name__ == "__main__":
-    ping_apps()
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run ping script
+        run: python keep_alive.py
