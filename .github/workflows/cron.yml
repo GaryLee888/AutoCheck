@@ -2,8 +2,9 @@ name: Wake Up Streamlit Apps
 
 on:
   schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch: 
+    # 改為每 10 小時執行一次，確保不會超過 12-24 小時的門檻
+    - cron: '0 */10 * * *'
+  workflow_dispatch:
 
 jobs:
   ping:
